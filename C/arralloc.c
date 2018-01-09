@@ -62,7 +62,7 @@ int *dimp, index;
    }
    else			/* Last recursion - set up pointers to data   */
       for( i = 0; i < prdim; i++)
-	 dpp[i] = dd + (i*dim)*size/sizeof(int);
+	 dpp[i] = dd + ((long)i*dim)*size/sizeof(int);
 }
             
 
