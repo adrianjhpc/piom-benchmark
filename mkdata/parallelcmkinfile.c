@@ -63,13 +63,6 @@ int main(int argc, char **argv){
       printf("Running on %d process(es) in a %d x %d grid\n",
 	     size, xprocs, yprocs);
       printf("\n");
-
-      for (i=0; i < size; i++)
-	{
-	  printf("Process %2d has grid coordinates (%2d, %2d)\n",
-		 i, pcoords[i][0], pcoords[i][1]);
-	}
-      printf("\n");
     }
 
   /*

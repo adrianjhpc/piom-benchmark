@@ -65,7 +65,7 @@ void getargs(int argc, char **argv, int *nx, int *ny, int *xprocs, int *yprocs, 
 
   if(rank == 0){
     printf("Running on %d processes\n",size);
-    printf("nx: %d ny: %d nxp: %d nyp: %d xprocs: %d yprocs: %d\n",*nx,*nx,*nxp,*nyp,*xprocs,*yprocs);
+    printf("nx: %d ny: %d nxp: %d nyp: %d xprocs: %d yprocs: %d\n",*nx,*ny,*nxp,*nyp,*xprocs,*yprocs);
     printf("barrier: %d\n",*barrier);
   }
 

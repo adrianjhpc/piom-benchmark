@@ -12,7 +12,7 @@ PARALLELCOBJ=parallelcmkinfile.o arralloc.o cioutils.o
 
 PARALLELFOBJ=parallelfmkinfile.o fioutils.o
 
-all: mkinfile parallelcinfile parallelfinfile
+all: mkinfile parallelcmkinfile parallelfmkinfile
 .PHONY:all
 
 %.o: %.c $(DEPS) 

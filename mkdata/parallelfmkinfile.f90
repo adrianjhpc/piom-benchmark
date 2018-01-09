@@ -87,13 +87,6 @@ program mpiio
                 xprocs, ' x ', yprocs, ' grid'
      write(*,*)
 
-     do i = 0, size-1
-       write(*,*) 'Process ', i, ' has grid coordinates (', &
-                  pcoords(1,i+1), ', ', pcoords(2,i+1), ')'
-     end do
-
-     write(*,*)
-
   end if
   
 !
@@ -130,7 +123,7 @@ program mpiio
 !  No IO hints are passed since MPI_INFO_NULL is specified
 !
 
-  call MPI_FILE_OPEN(comm, filename, MPI_MODE_CREATEMPI_MODE_WRONLY, &
+  call MPI_FILE_OPEN(comm, filename, MPI_MODE_CREATE+MPI_MODE_WRONLY, &
                      MPI_INFO_NULL, fh, ierr)
 
   if (ierr /= MPI_SUCCESS) write(*,*) 'Open error on rank ', rank
