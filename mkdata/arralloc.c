@@ -61,8 +61,9 @@ int *dimp, index;
 				dimp, (index+1) );
    }
    else			/* Last recursion - set up pointers to data   */
-      for( i = 0; i < prdim; i++)
-	 dpp[i] = dd + (i*dim)*size/sizeof(int);
+      for( i = 0; i < prdim; i++){
+	 dpp[i] = dd + ((long)i*dim)*size/sizeof(int);
+      }
 }
             
 
@@ -133,8 +134,10 @@ void *arralloc(size_t size, int ndim, ...)
     *  Allocate space  for pointers and data.
     */
    if( (start = (void**)malloc(
-		(size_t)((n_data*size)+align_size+(n_ptr*sizeof(void**))))) == 0)
+		(size_t)((n_data*size)+align_size+(n_ptr*sizeof(void**))))) == 0){
+      printf("Error on allocation\n");
       return 0;
+   }
    /*
     * Set up pointers to form dope-vector array.
     */
