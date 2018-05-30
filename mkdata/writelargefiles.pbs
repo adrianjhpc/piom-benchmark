@@ -1,0 +1,25 @@
+#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -l select=22
+#PBS -l walltime=00:05:00
+#PBS -A z19-cse
+#PBS -N writelargefiles
+
+# Change to the directory that the job was submitted from
+# (remember this should be on the /work filesystem)
+cd $PBS_O_WORKDIR
+
+NPROCS=512
+XPROCS=32
+YPROCS=16
+BARRIER=0
+
+EXECUTABLELOCATION=/home/z01/z01/adrianj/piom-benchmark/mkdata
+WORKDIRECTORY=/work/z01/z01/adrianj/piom/striped/
+
+cd $WORKDIRECTORY
+
+echo "max stripes"
+aprun -n $NPROCS $EXECUTABLELOCATION/parallelcmkinfile 640000 144000 $XPROCS $YPROCS $BARRIER
+	
