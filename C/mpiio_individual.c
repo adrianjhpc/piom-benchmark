@@ -81,13 +81,6 @@ int main(int argc, char **argv)
    */
   initarray(&x[0][0]  , nxp, nyp);
 
-
-  /*
-   *  Read the entire array on the master process
-   *  Passing "-1" as the rank argument means that the file name has no
-   *  trailing "_rank" appended to it, ie we read the global file
-   */
-
   if(barrier){
     MPI_Barrier(comm);
   }
