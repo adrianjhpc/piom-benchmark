@@ -190,7 +190,7 @@ void ioread(char *filename, void *ptr, int nfloat)
 
   fclose(fp);
 
-  printf("... done\n", filename);
+  printf("... done\n");
 }
 
 void iochunkread(char *filename, void *ptr, int nfloat, long int offset)
@@ -248,7 +248,7 @@ void iowrite(char *filename, void *ptr, int nfloat)
   }
 
   fclose(fp);
-  printf("... done\n", filename);
+  printf("... done\n");
 }
 
 
@@ -281,7 +281,7 @@ void iochunkwrite(char *filename, void *ptr, int nfloat, long int offset)
   }
 
   fclose(fp);
-  printf("... done\n", filename);
+  printf("... done\n");
 }
 
 
