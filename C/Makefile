@@ -1,4 +1,4 @@
-CC=cc
+CC=mpicc
 CFLAGS=-g
 
 DEPS=Makefile arralloc.h ioutils.h
@@ -17,8 +17,9 @@ SUB_READALL_VEC=mpiio_sub_readall_vector
 SUB_READ_SUB=mpiio_sub_read_subarray
 SUB_READALL_SUB=mpiio_sub_readall_subarray
 INDIVID=mpiio_individual
+INDIVID_FILES=individual_files
 
-all: $(SSEND) $(BCAST) $(MASTER_VEC) $(MASTER_SUB) $(READ_VEC) $(READ_SUB) $(READALL_SUB) $(READALL_VEC) $(SUB_READ_VEC) $(SUB_READALL_VEC) $(SUB_READ_SUB) $(SUB_READALL_SUB) $(INDIVID)
+all: $(SSEND) $(BCAST) $(MASTER_VEC) $(MASTER_SUB) $(READ_VEC) $(READ_SUB) $(READALL_SUB) $(READALL_VEC) $(SUB_READ_VEC) $(SUB_READALL_VEC) $(SUB_READ_SUB) $(SUB_READALL_SUB) $(INDIVID) ${INDIVID_FILES}
 
 .PHONY:all
 
@@ -32,6 +33,9 @@ $(SSEND): $(OBJ) $(SSEND).o
 	$(CC) -o $@ $@.o $(OBJ) $(CFLAGS)
 
 $(INDIVID): $(OBJ) $(INDIVID).o
+	$(CC) -o $@ $@.o $(OBJ) $(CFLAGS)
+
+$(INDIVID_FILES): $(OBJ) $(INDIVID_FILES).o
 	$(CC) -o $@ $@.o $(OBJ) $(CFLAGS)
 
 $(MASTER_VEC): $(OBJ) $(MASTER_VEC).o
@@ -66,4 +70,4 @@ $(SUB_READALL_SUB): $(OBJ) $(SUB_READALL_SUB).o
 
 
 clean:
-	rm -fr *.o core* $(SSEND) $(BCAST) $(MASTER_VEC) $(MASTER_SUB) $(READ_VEC) $(READ_SUB) $(READALL_SUB) $(READALL_VEC) $(SUB_READ_VEC) $(SUB_READALL_VEC) $(SUB_READ_SUB) $(SUB_READALL_SUB) $(INDIVID)
+	rm -fr *.o core* $(SSEND) $(BCAST) $(MASTER_VEC) $(MASTER_SUB) $(READ_VEC) $(READ_SUB) $(READALL_SUB) $(READALL_VEC) $(SUB_READ_VEC) $(SUB_READALL_VEC) $(SUB_READ_SUB) $(SUB_READALL_SUB) $(INDIVID) ${INDIVID_FILES}
