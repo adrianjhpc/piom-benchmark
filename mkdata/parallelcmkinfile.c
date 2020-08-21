@@ -69,7 +69,7 @@ int main(int argc, char **argv){
    *  Initialise the arrays to a grey value
    */
 
-  initarray(&x[0][0]  , nxp, nyp);
+  initarray(&x[0][0], rank, nxp, nyp);
 
   if(barrier){
     MPI_Barrier(comm);

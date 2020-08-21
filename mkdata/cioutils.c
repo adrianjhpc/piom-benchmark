@@ -77,9 +77,15 @@ void createfilename(char *filename, char *basename, int nx, int ny)
   sprintf(filename, "%s%04dx%04d.dat", basename, nx, ny);
 }
 
+void createindividualfilename(char *filename, char *basename, int nx, int ny, int nxp, int nyp, int rank)
+{
+  sprintf(filename, "%s%04dx%04d-%04dx%04d-%03d.dat", basename, nx, ny, nxp, nyp, rank);
+}
+
+
 #define INITDATAVAL 0.5
 
-void initarray(void *ptr, int nx, int ny)
+void initarray(void *ptr, int rank, int nx, int ny)
 {
   int i, j;
 
@@ -87,7 +93,7 @@ void initarray(void *ptr, int nx, int ny)
 
   for (i=0; i < nx*ny; i++)
     {
-      data[i] = INITDATAVAL;
+      data[i] = INITDATAVAL*rank;
     }
 }
 
