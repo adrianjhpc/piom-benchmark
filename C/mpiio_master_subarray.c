@@ -179,7 +179,7 @@ int main(int argc, char **argv)
    */
 
 #ifdef DEBUG
-  createfilename(filename, "coutput", nxp, nyp, rank);
+  createfilename(filename, "coutput", nx, ny, nxp, nyp, rank);
   iowrite(filename, &x[0][0], nxp*nyp);
 #endif
 

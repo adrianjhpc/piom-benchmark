@@ -102,13 +102,6 @@ int main(int argc, char **argv){
   MPI_Type_commit(&my_mpi_vector);
 
   /*
-   *  Construct name of input file: -1 means no rank info is appended
-   */
-
-  createfilename(filename, "cinput", nx, ny, -1);
-
-
-  /*
    *  Open the file for reading only and attach to file handle fh
    *  No IO hints are passed since MPI_INFO_NULL is specified
    */
@@ -170,7 +163,7 @@ int main(int argc, char **argv){
    */
 
 #ifdef DEBUG
-  createfilename(filename, "coutput", nxp, nyp, rank);
+  createfilename(filename, "coutput", nx, ny, nxp, nyp, rank);
   iowrite(filename, &x[0][0], nxp*nyp);
 #endif
 

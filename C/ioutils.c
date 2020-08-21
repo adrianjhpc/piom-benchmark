@@ -134,15 +134,15 @@ void dotimings(double totaltime, int rank, int size){
 
 }
 
-void createfilename(char *filename, char *basename, int nx, int ny, int rank)
+void createfilename(char *filename, char *basename, int nx, int ny, int nxp, int nyp, int rank)
 {
   if (rank < 0)
     {
-      sprintf(filename, "%s%04dx%04d.dat", basename, nx, ny);
+      sprintf(filename, "%s%04dx%04d-%04dx%04d.dat", basename, nx, ny, nxp, nyp);
     }
   else
     {
-      sprintf(filename, "%s%04dx%04d_%02d.dat", basename, nx, ny, rank);
+      sprintf(filename, "%s%04dx%04d-%04dx%04d-%03d.dat", basename, nx, ny, nxp, nyp, rank);
     }
 }
 
