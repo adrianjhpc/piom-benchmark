@@ -13,7 +13,7 @@ void getargs(int argc, char **argv, int *nx, int *ny, int *xprocs, int *yprocs, 
 
 void dotimings(double totaltime, int rank,int size);
 
-void createfilename(char *filename, char *basename, int nx, int ny, int rank);
+void createfilename(char *filename, char *basename, int nx, int ny, int nxp, int nyp, int rank);
 
 void ioread (char *filename, void *ptr, int nfloat);
 void iowrite(char *filename, void *ptr, int nfloat);

@@ -44,7 +44,7 @@ int main(int argc, char **argv)
   MPI_Comm_rank(comm, &rank);
   
   checkandgetarguments(argc, argv, &nx, &ny, &xprocs, &yprocs, &nxp, &nyp, &barrier, size, rank);
- 
+
   pcoords = (int **)arralloc(sizeof(int), 2, size, NDIM);
   x = (float **)arralloc(sizeof(float),2,nxp,nyp);
 
@@ -82,22 +82,27 @@ int main(int argc, char **argv)
 
   starttime = MPI_Wtime();
   
+  datasize = sizeof(float);
   offset = 0;
 
   for(i=0; i<nxp; i++){
     iochunkread (inputfilename, &x[i][0], nyp, offset);
+    offset = offset + nyp*datasize;
   }
 
   endtime = MPI_Wtime();
 
   int stop = 0;
 
+  float initial_data = rank * 0.5;
+
   for(i=0; i<nxp; i++){
     for(j=0; j<nyp; j++){
-      if(x[i][j] != rank * 0.5){
-        printf("error %d %d %lf\n",i,j,x[i][j]);
+      if(x[i][j] != initial_data){
+        printf("%d error %d %d %lf %lf\n",rank,i,j,x[i][j],initial_data);
         stop = 1;
       }
+      initial_data = initial_data + 1.0;
       if(stop == 1){
         break;
       }
