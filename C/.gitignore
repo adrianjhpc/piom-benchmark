@@ -1,0 +1,16 @@
+# executable files
+       individual_files
+       mpiio_bcast
+       mpiio_individual
+       mpiio_master_subarray
+       mpiio_master_vector
+       mpiio_read_subarray
+       mpiio_read_vector
+       mpiio_readall_subarray
+       mpiio_readall_vector
+       mpiio_ssend
+       mpiio_sub_read_subarray
+       mpiio_sub_read_vector
+       mpiio_sub_readall_subarray
+       mpiio_sub_readall_vector
+
