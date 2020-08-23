@@ -91,10 +91,14 @@ void initarray(void *ptr, int rank, int nx, int ny)
 
   float *data = (float *) ptr;
 
-  for (i=0; i < nx*ny; i++)
-    {
-      data[i] = INITDATAVAL*rank;
+  float initial_data = INITDATAVAL*rank;
+
+  for (i=0; i < nx; i++){
+    for (j=0; j< ny; j++){
+       data[i*ny+j] = initial_data;
+       initial_data = initial_data + 1.0;
     }
+  }
 }
 
 #define NDIM 2
