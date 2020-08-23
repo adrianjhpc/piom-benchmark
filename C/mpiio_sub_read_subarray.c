@@ -138,7 +138,7 @@ int main(int argc, char **argv){
 	}
       
       /*
-       *  Read all the data for this process (ie nxp*nyp floats)
+       *  Read all the data for the non-worker process (ie nxp*nyp floats)
        */
 
       if (MPI_File_read(fh, &x[0][0], nxp*nyp, MPI_FLOAT, &status) != MPI_SUCCESS)
@@ -148,6 +148,7 @@ int main(int argc, char **argv){
 
       MPI_Type_free(&my_mpi_subarray);
 
+      // Send the data to the non-worker process
       MPI_Ssend(&x[0][0], nxp*nyp, MPI_FLOAT, i, tag, comm);
     }
 
