@@ -42,15 +42,17 @@ subroutine initpgrid(pcoords, nxproc, nyproc)
   integer :: nxproc, nyproc
   integer, dimension(ndim, nxproc*nyproc) :: pcoords
 
-  integer, dimension(ndim) :: dims, periods
+  integer, dimension(ndim) :: dims
+  logical, dimension(ndim) :: periods
+  integer, dimension(ndim) :: local_pcoords
 
-  integer :: i, ierr
+  integer :: i, j, ierr
   integer :: comm = MPI_COMM_WORLD
   integer :: gridcomm
 
   logical :: reorder
 
-  periods = (/ 0, 0 /)
+  periods = (/ .false., .false. /)
   reorder = .false.
 
   dims(1) = nxproc
@@ -59,9 +61,12 @@ subroutine initpgrid(pcoords, nxproc, nyproc)
   call MPI_CART_CREATE(comm, ndim, dims, periods, reorder, gridcomm, ierr)
 
   do i = 1, nxproc*nyproc
-
-    call MPI_CART_COORDS(gridcomm, i-1, ndim, pcoords(1, i), ierr)
-
+    ! Copy the pcoords to a local array to get around some gfortran interface checking errors 
+    ! when passing slices of the global pcoords array
+    do j = 1, ndim
+      local_pcoords(j) = pcoords(j, i)
+    end do
+    call MPI_CART_COORDS(gridcomm, i-1, ndim, local_pcoords, ierr)
   end do
 
   call MPI_COMM_FREE(gridcomm, ierr)
@@ -69,13 +74,13 @@ subroutine initpgrid(pcoords, nxproc, nyproc)
 end subroutine initpgrid
 
 
-subroutine checkandgetarguments(nx, ny, xprocs, yprocs, nxp, nyp, barrier, size, rank)
+subroutine checkandgetarguments(nx, ny, xprocs, yprocs, nxp, nyp, barrier, mpi_size, rank)
 
   use mpi
 
   implicit none
 
-  integer, intent(in) :: size, rank
+  integer, intent(in) :: mpi_size, rank
   integer, intent(out) :: nx, ny, xprocs, yprocs, nxp, nyp, barrier
   integer :: i, numargs, ierr
   character(len=32) :: arg
@@ -91,18 +96,18 @@ subroutine checkandgetarguments(nx, ny, xprocs, yprocs, nxp, nyp, barrier, size,
      call MPI_FINALIZE(ierr)
      stop
   else
-     call getargs(nx, ny, xprocs, yprocs, nxp, nyp, barrier, size, rank)
+     call getargs(nx, ny, xprocs, yprocs, nxp, nyp, barrier, mpi_size, rank)
   end if
 
 end subroutine checkandgetarguments
 
-subroutine getargs(nx, ny, xprocs, yprocs, nxp, nyp, barrier, size, rank)
+subroutine getargs(nx, ny, xprocs, yprocs, nxp, nyp, barrier, mpi_size, rank)
 
   use mpi
 
   implicit none
 
-  integer, intent(in) :: size, rank
+  integer, intent(in) :: mpi_size, rank
   integer, intent(out) :: nx, ny, xprocs, yprocs, nxp, nyp, barrier
 
   integer :: i, numargs, ierr
@@ -123,10 +128,10 @@ subroutine getargs(nx, ny, xprocs, yprocs, nxp, nyp, barrier, size, rank)
   call getarg(5,arg)
   arg = trim(arg)
   read(arg, '(I2)') barrier
-  if(xprocs*yprocs .ne. size) then
+  if(xprocs*yprocs .ne. mpi_size) then
      if(rank .eq. 0) then
         write(*,*) 'The specified xprocs and yprocs assignment does not match the total number of processes being used.'
-        write(*,*) 'xprocs is ',xprocs,' yprocs is ',yprocs,' but total processes used is ',size,' which does not match xprocs * yprocs'
+        write(*,*) 'xprocs is ',xprocs,' yprocs is ',yprocs,' but total processes used is ',mpi_size,' which does not match xprocs * yprocs'
      end if
      call MPI_FINALIZE(ierr)
      stop
@@ -155,7 +160,7 @@ subroutine getargs(nx, ny, xprocs, yprocs, nxp, nyp, barrier, size, rank)
      stop
   end if
   if(rank .eq. 0) then
-     write(*,*) 'Running on',size,'processes'
+     write(*,*) 'Running on',mpi_size,'processes'
      write(*,*) 'nx:',nx,'ny:',ny,'nxp:',nxp,'nyp:',nyp,'xprocs:',xprocs,'yprocs:',yprocs
      write(*,*) 'barrier:',barrier
   end if
